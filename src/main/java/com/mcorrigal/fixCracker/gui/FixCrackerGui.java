@@ -88,34 +88,36 @@ public class FixCrackerGui implements ActionListener {
 				null, 
 				null, 
 				"<message>");
-		try {
-			Map<Integer, String> fixMessageMap = messageReader.parseFixString(rawFixString);
-			JInternalFrame fixFrame = new JInternalFrame("New Fix Message", true, true, true, true);
+        if (rawFixString != null) {
+            try {
+                Map<Integer, String> fixMessageMap = messageReader.parseFixString(rawFixString);
+                JInternalFrame fixFrame = new JInternalFrame("New Fix Message", true, true, true, true);
 
-			JPanel content = new JPanel();
-			content.setLayout(new BorderLayout());
-			
-			JTextArea fixStringTextArea = new JTextArea(StringUtils.replace(rawFixString, SOH, PIPE));
-			fixStringTextArea.setEditable(false);
-			fixStringTextArea.setLineWrap(true);
-			fixStringTextArea.setWrapStyleWord(false);
-			fixStringTextArea.setFont(FIXED_WIDTH_FONT);
-			
-			JScrollPane fixStringSrcollPane = new JScrollPane(fixStringTextArea);
-			FixMessageTableFactory fixTableFactory = new FixMessageTableFactory(messageReader);
-			JScrollPane tableScrollPane = new JScrollPane(fixTableFactory.create(fixMessageMap));
-			
-			content.add(fixStringSrcollPane, BorderLayout.NORTH);
-			content.add(tableScrollPane, BorderLayout.CENTER);
-			
-			fixFrame.setContentPane(content);
-			fixFrame.setVisible(true);
-			fixFrame.pack();
-			desktopPane.add(fixFrame);
-			frame.setContentPane(desktopPane);
-		} catch (Exception e) {
-			alertError(e);
-		}
+                JPanel content = new JPanel();
+                content.setLayout(new BorderLayout());
+
+                JTextArea fixStringTextArea = new JTextArea(StringUtils.replace(rawFixString, SOH, PIPE));
+                fixStringTextArea.setEditable(false);
+                fixStringTextArea.setLineWrap(true);
+                fixStringTextArea.setWrapStyleWord(false);
+                fixStringTextArea.setFont(FIXED_WIDTH_FONT);
+
+                JScrollPane fixStringSrcollPane = new JScrollPane(fixStringTextArea);
+                FixMessageTableFactory fixTableFactory = new FixMessageTableFactory(messageReader);
+                JScrollPane tableScrollPane = new JScrollPane(fixTableFactory.create(fixMessageMap));
+
+                content.add(fixStringSrcollPane, BorderLayout.NORTH);
+                content.add(tableScrollPane, BorderLayout.CENTER);
+
+                fixFrame.setContentPane(content);
+                fixFrame.setVisible(true);
+                fixFrame.pack();
+                desktopPane.add(fixFrame);
+                frame.setContentPane(desktopPane);
+            } catch (Exception e) {
+                alertError(e);
+            }
+        }
 	}
 	
 	private void alertError(Exception e) {
